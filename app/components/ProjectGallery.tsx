@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { Stagger, item } from "./Reveal";
 
 type Project = {
   category: string;
@@ -88,10 +90,13 @@ export default function ProjectGallery() {
 
   return (
     <>
-      <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <Stagger className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {PROJECTS.map((p, i) => (
-          <button
+          <motion.button
             key={p.title}
+            variants={item}
+            whileHover={{ y: -6 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
             onClick={() => open(i)}
             className="group block overflow-hidden rounded-sm bg-white text-left shadow-sm ring-1 ring-ink/5 transition-shadow hover:shadow-xl"
           >
@@ -120,43 +125,63 @@ export default function ProjectGallery() {
                 </svg>
               </span>
             </div>
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </Stagger>
 
-      {project && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
-          onClick={close}
-          role="dialog"
-          aria-modal="true"
-          aria-label={project.title}
-        >
-          <button
+      <AnimatePresence>
+        {project && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
             onClick={close}
-            aria-label="Cerrar"
-            className="absolute right-5 top-5 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white hover:text-ink"
+            role="dialog"
+            aria-modal="true"
+            aria-label={project.title}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
+            <button
+              onClick={close}
+              aria-label="Cerrar"
+              className="absolute right-5 top-5 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white hover:text-ink"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
 
-          <div
-            className="relative w-full max-w-5xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative aspect-16/10 w-full overflow-hidden rounded-sm bg-ink">
-              <Image
-                src={project.images[slide]}
-                alt={`${project.title} — imagen ${slide + 1}`}
-                fill
-                sizes="100vw"
-                className="object-contain"
-                priority
-              />
+            <motion.div
+              className="relative w-full max-w-5xl"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.94, opacity: 0, y: 16 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.94, opacity: 0, y: 16 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="relative aspect-16/10 w-full overflow-hidden rounded-sm bg-ink">
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.div
+                    key={slide}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  >
+                    <Image
+                      src={project.images[slide]}
+                      alt={`${project.title} — imagen ${slide + 1}`}
+                      fill
+                      sizes="100vw"
+                      className="object-contain"
+                      priority
+                    />
+                  </motion.div>
+                </AnimatePresence>
 
-              <button
+                <button
                 onClick={prev}
                 aria-label="Anterior"
                 className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-gold hover:text-ink"
@@ -202,9 +227,10 @@ export default function ProjectGallery() {
                 </button>
               ))}
             </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
