@@ -51,7 +51,7 @@ const VALUES = [
 ];
 
 const PHONE = "6692206638";
-const EMAIL = "signa.arquitectos@gmail.com";
+const EMAIL = "annabel.quintero@signaarquitectos.com";
 
 /* ----------------------------------------------------------------- page --- */
 
@@ -105,7 +105,7 @@ function Hero() {
           <Reveal delay={0.35}>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-foreground/75">
               Empresa de arquitectura, diseño y construcción en Mazatlán,
-              Sinaloa. Llevamos su proyecto desde la idea hasta la entrega, con
+              Sinaloa. Llevamos tu proyecto desde la idea hasta la entrega, con
               los más altos estándares de calidad, seguridad y servicio.
             </p>
           </Reveal>
@@ -338,7 +338,7 @@ function Contact() {
           Contacto
         </p>
         <h2 className="font-display text-4xl font-medium leading-tight lg:text-5xl">
-          Hagamos realidad su próximo proyecto
+          Hagamos realidad tu próximo proyecto
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-foreground/70">
           Corresponsabilidad con nuestros clientes desde la proyección de la
