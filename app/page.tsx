@@ -51,7 +51,7 @@ const VALUES = [
 ];
 
 const PHONE = "6692206638";
-const EMAIL = "annabel.quintero@signaarquitectos.com";
+const EMAIL = "contacto@signaarquitectos.com";
 
 /* ----------------------------------------------------------------- page --- */
 
